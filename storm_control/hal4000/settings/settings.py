@@ -207,6 +207,8 @@ class Settings(halModule.HalModule):
             # Start the editor.
             self.view.startParameterEditor()
                     
+
+
         elif message.isType("new parameters"):
 
             # Check if we got any errors.
@@ -295,6 +297,10 @@ class Settings(halModule.HalModule):
             self.view.updateCurrentParameters(message.getSourceName(),
                                               message.getData()["parameters"].copy())
             
+        elif message.isType("feedparams"):
+            data = message.getData()
+            self.view.updateCurrentParameters(message.getSourceName(), data["parameters"])
+
         elif message.isType("new parameters file"):
                 
             # Ignore this message if the UI is disabled and send a warning.
@@ -316,8 +322,9 @@ class Settings(halModule.HalModule):
             self.view.newParametersFile(data["filename"], is_default)
 
         elif message.isType("parameters changed"):
+            #halMessageBox.halMessageBoxInfo(message.getSourceName())
             self.waiting_on.remove(message.getSourceName())
-
+                       
             if message.getData() is not None:
                 self.view.updateCurrentParameters(message.getSourceName(),
                                                   message.getData()["new parameters"].copy())

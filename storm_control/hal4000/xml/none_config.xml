@@ -54,6 +54,10 @@
     <feeds>
       <class_name type="string">Feeds</class_name>
       <module_name type="string">storm_control.hal4000.feeds.feeds</module_name>
+      <configuration>
+          <illumination_functionality type="string">illumination</illumination_functionality>
+      </configuration>
+
     </feeds>
 
     <!-- Filming and starting/stopping the camera. -->

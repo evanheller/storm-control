@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<settings>
+
+  <!-- camera settings -->
+  <camera1>
+    <emccd_gain type="int">150</emccd_gain>
+    <x_start type="int">1</x_start>
+    <x_end type="int">512</x_end>
+    <y_start type="int">1</y_start>
+    <y_end type="int">512</y_end>
+    <exposure_time type="float">0.1</exposure_time>
+    <save type="boolean">False</save>
+  </camera1>
+
+  <film>
+    <filetype type="string">.dax</filetype>
+  </film>
+
+  
+</settings>

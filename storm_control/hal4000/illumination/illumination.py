@@ -195,6 +195,24 @@ class IlluminationView(halDialog.HalDialog):
         self.guiMessage.emit(halMessage.HalMessage(m_type = "new shutters file",
                                                    data = {"filename" : self.parameters.get("shutters")}))
 
+    def addShutters(self, shutterdata):
+        self.waveforms = []
+
+        waveforms = shutterdata["waveforms"]
+        oversampling = shutterdata["oversampling"]
+        self.shutters_info = shutterdata["shutterinfo"]
+
+        for i, channel in enumerate(self.channels):
+            # Channels determine whether or not they are used for filming based on the waveform.
+            channel.setUsedForFilm(waveforms[i])
+            
+            # Channels create DaqWaveform objects (or not) based on the waveform.
+            self.waveforms.extend(channel.getDaqWaveforms(waveforms[i], oversampling))
+
+        # Send shutters info to other modules
+        self.guiMessage.emit(halMessage.HalMessage(m_type = "configuration",
+                                                   data = {"properties" : {"shutters info" : self.shutters_info}}))
+
     def newShutters(self, shutters_filename):
         """
         Called when we get new parameters, which will have a shutters file,
@@ -363,6 +381,9 @@ class Illumination(halModule.HalModule):
             self.view.newParameters(p.get(self.module_name))
             message.addResponse(halMessage.HalMessageResponse(source = self.module_name,
                                                               data = {"new parameters" : self.view.getParameters()}))
+
+        elif message.isType("new shutters"):
+            self.view.addShutters(message.getData())
 
         elif message.isType("new shutters file"):
             self.view.newShutters(message.getData()["filename"])
